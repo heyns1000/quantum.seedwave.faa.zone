@@ -390,6 +390,7 @@
             .editor-actions button.secondary {
                 color: var(--light-primary-color);
                 border-color: var(--light-primary-color);
+                background-color: transparent;
             }
             .editor-actions button.secondary:hover {
                 background-color: rgba(0, 113, 227, 0.08);
@@ -926,7 +927,7 @@
             color: var(--text-color-dark);
         }
 
-        .toggle-section-btn {
+        .toggle-section-btn, .toggle-protocol-section-btn {
             background-color: transparent;
             border: none;
             cursor: pointer;
@@ -941,44 +942,44 @@
             color: var(--primary-color); /* Matches current active nav link or primary color */
             transition: color 0.2s ease;
         }
-        body.light-mode .toggle-section-btn {
+        body.light-mode .toggle-section-btn, body.light-mode .toggle-protocol-section-btn {
             color: var(--light-primary-color);
         }
-        .toggle-section-btn:hover {
+        .toggle-section-btn:hover, .toggle-protocol-section-btn:hover {
             color: var(--primary-color);
         }
-        .toggle-section-btn i {
+        .toggle-section-btn i, .toggle-protocol-section-btn i {
             margin-left: 0.5rem;
             transition: transform 0.2s ease;
         }
-        .toggle-section-btn i.fa-chevron-up {
+        .toggle-section-btn i.fa-chevron-up, .toggle-protocol-section-btn i.fa-chevron-up {
             transform: rotate(180deg);
         }
-        .repo-content-section {
+        .repo-content-section, .protocol-section-content {
             padding-left: 1rem;
             border-left: 2px solid var(--border-color-dark); /* Indent and show hierarchy */
             margin-top: 1rem;
             padding-top: 0.5rem;
         }
-        body.light-mode .repo-content-section {
+        body.light-mode .repo-content-section, body.light-mode .protocol-section-content {
             border-color: var(--light-border-color-dark);
         }
-        .repo-content-section .toggle-section-btn {
+        .repo-content-section .toggle-section-btn, .protocol-section-content .toggle-protocol-section-btn {
             font-size: 1rem; /* Smaller for nested levels */
             font-weight: 500;
             color: var(--text-color-light); /* Nested sections use lighter text color */
         }
-        body.light-mode .repo-content-section .toggle-section-btn {
+        body.light-mode .repo-content-section .toggle-section-btn, body.light-mode .protocol-section-content .toggle-protocol-section-btn {
             color: var(--text-color-dark);
         }
 
         /* Ecosystem Map specific section-intro and section-title */
-        #ecosystem-map-view .section-title {
+        #ecosystem-roadmap-view .section-title {
             color: var(--secondary-color);
             font-size: 2.2rem;
             font-weight: 800;
         }
-        #ecosystem-map-view .section-intro {
+        #ecosystem-roadmap-view .section-intro {
             color: var(--text-color-light);
             text-align: center;
             font-size: 1.1rem;
@@ -986,7 +987,7 @@
             margin-left: auto;
             margin-right: auto;
         }
-        body.light-mode #ecosystem-map-view .section-intro {
+        body.light-mode #ecosystem-roadmap-view .section-intro {
             color: var(--text-color-dark);
         }
 
@@ -1315,6 +1316,9 @@
             <a href="#quantum-insights" data-view="quantum-insights">
                 <i class="fas fa-brain nav-icon"></i> Quantum Insights
             </a>
+            <a href="#ecosystem-roadmap" data-view="ecosystem-roadmap">
+                <i class="fas fa-map-marked-alt nav-icon"></i> Ecosystem Roadmap
+            </a>
             <a href="#pricing" data-view="pricing">
                 <i class="fas fa-dollar-sign nav-icon"></i> Pricing & Billing
             </a>
@@ -1417,18 +1421,36 @@
                 </div>
             </div>
 
-            <!-- Recent Alerts -->
+            <!-- Recent Alerts with Anomaly Investigator -->
             <div class="panel">
                 <h3 class="mb-4">Recent Alerts</h3>
                 <div class="space-y-3">
-                    <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-sm flex items-center">
-                        <span class="font-semibold mr-2">CRITICAL:</span> Protocol A Anomaly Detected.
+                    <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-sm flex items-center justify-between">
+                        <div>
+                            <span class="font-semibold mr-2">CRITICAL:</span> Protocol A Anomaly Detected.
+                        </div>
+                        <button class="form-action-button text-xs px-2 py-1 ml-4" onclick="window.investigateAnomaly('CRITICAL: Protocol A Anomaly Detected.', this)">
+                            <i class="fas fa-search"></i> ✨ Investigate
+                        </button>
+                        <p id="alertStatus-1" class="text-xs text-gray-400 mt-1 hidden"></p>
                     </div>
-                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-3 rounded-md text-sm flex items-center">
-                        <span class="font-semibold mr-2">WARNING:</span> High Latency on Network Segment B.
+                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-3 rounded-md text-sm flex items-center justify-between">
+                        <div>
+                            <span class="font-semibold mr-2">WARNING:</span> High Latency on Network Segment B.
+                        </div>
+                        <button class="form-action-button text-xs px-2 py-1 ml-4" onclick="window.investigateAnomaly('WARNING: High Latency on Network Segment B.', this)">
+                            <i class="fas fa-search"></i> ✨ Investigate
+                        </button>
+                        <p id="alertStatus-2" class="text-xs text-gray-400 mt-1 hidden"></p>
                     </div>
-                    <div class="bg-blue-50 border border-blue-200 text-blue-700 p-3 rounded-md text-sm flex items-center">
-                        <span class="font-semibold mr-2">INFO:</span> New Firmware Update Available.
+                    <div class="bg-blue-50 border border-blue-200 text-blue-700 p-3 rounded-md text-sm flex items-center justify-between">
+                        <div>
+                            <span class="font-semibold mr-2">INFO:</span> New Firmware Update Available.
+                        </div>
+                        <button class="form-action-button text-xs px-2 py-1 ml-4" onclick="window.investigateAnomaly('INFO: New Firmware Update Available.', this)">
+                            <i class="fas fa-search"></i> ✨ Investigate
+                        </button>
+                        <p id="alertStatus-3" class="text-xs text-gray-400 mt-1 hidden"></p>
                     </div>
                 </div>
             </div>
@@ -1531,6 +1553,38 @@
                     <p class="text-gray-500 text-sm mt-4">Protocols will be saved in your FAA Quantum workspace and can be deployed to the Global Quantum Grid upon registration.</p>
                 </form>
             </div>
+
+            <!-- Quantum Code Development Tools (NEW) -->
+            <div class="panel mt-8">
+                <h3><i class="fas fa-terminal mr-2"></i> Quantum Code Development Tools</h3>
+                <p class="mb-4 text-gray-400">Leverage AI to generate, optimize, and understand quantum code snippets or pseudo-code for your protocols.</p>
+
+                <div class="form-control">
+                    <label for="quantumCodeDescription">Quantum Code Description (for generation)</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="quantumCodeDescription" placeholder="e.g., Qiskit for Bell state creation, Cirq for quantum Fourier transform">
+                        <button type="button" id="generateQuantumCodeBtn" class="form-action-button text-xs px-3 py-2">
+                            ✨ Generate Quantum Code
+                        </button>
+                    </div>
+                    <p id="quantumCodeGenStatus" class="text-xs text-gray-400 mt-1"></p>
+                </div>
+
+                <div class="form-control">
+                    <label for="quantumCodeArea">Quantum Code Area (Input/Output)</label>
+                    <textarea id="quantumCodeArea" rows="10" class="flex-grow" placeholder="Paste your quantum code here, or it will be generated here..."></textarea>
+                    <div class="flex flex-wrap items-center gap-2 mt-2">
+                        <button type="button" id="optimizeQuantumCodeBtn" class="form-action-button text-xs px-3 py-2">
+                            <i class="fas fa-magic"></i> ✨ Optimize Quantum Code
+                        </button>
+                        <button type="button" id="explainQuantumCodeBtn" class="form-action-button secondary text-xs px-3 py-2">
+                            <i class="fas fa-question-circle"></i> ✨ Explain Quantum Code
+                        </button>
+                    </div>
+                    <p id="quantumCodeOptExplainStatus" class="text-xs text-gray-400 mt-1"></p>
+                    <div id="quantumCodeExplanationOutput" class="w-full p-2 border border-gray-600 rounded-md bg-gray-700 text-white mt-2 hidden" style="white-space: pre-wrap;"></div>
+                </div>
+            </div>
         </section>
 
         <!-- Quantum Insights View (Adapted from Analytics) -->
@@ -1552,6 +1606,22 @@
                     <h4>Qubit Engagement Metrics</h4>
                     <div class="chart-container">
                         <canvas id="qubitActivityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ecosystem Roadmap View (NEW) -->
+        <section id="ecosystem-roadmap-view" class="view view-hidden">
+            <div class="panel">
+                <h2 class="section-title text-center mb-12">FAA™ Quantum Ecosystem Roadmap</h2>
+                <p class="section-intro mb-8">This roadmap outlines the strategic phases and key milestones for the development and expansion of the FAA™ Quantum Protocols ecosystem. Each phase builds upon the last, driving towards a fully integrated and globally accessible quantum network.</p>
+                
+                <div id="roadmapContainer" class="max-w-4xl mx-auto bg-gray-800 p-6 rounded-lg shadow-2xl text-left">
+                    <h3 class="text-xl font-bold mb-4 text-orange-400">Roadmap Overview:</h3>
+                    <div class="space-y-4">
+                        <!-- Roadmap phases and milestones will be rendered here by JS -->
+                        <p class="text-gray-400">Loading roadmap data...</p>
                     </div>
                 </div>
             </div>
@@ -1911,35 +1981,20 @@
         </section>
     </main>
 
-    <!-- Template Preview Modal -->
-    <div id="templatePreviewModal" class="custom-modal-overlay">
-        <div class="custom-modal-content max-w-4xl w-full h-auto" style="padding: 0; text-align: left;">
-            <div class="template-preview-header">
-                <h3 id="templatePreviewTitle"></h3>
-                <button class="close-preview-btn" onclick="hideTemplatePreviewModal()"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="template-preview-body">
-                <iframe id="templatePreviewFrame" class="template-preview-frame" sandbox="allow-scripts allow-same-origin"></iframe>
-                <p id="templatePreviewDescription" class="text-gray-400 text-sm mt-2"></p>
-                <div class="template-preview-actions">
-                    <button class="btn-primary" id="useTemplateNewProjectBtn"><i class="fas fa-plus-circle mr-2"></i> Use in New Protocol</button>
-                    <button class="btn-secondary" id="useTemplateScrollBuilderBtn"><i class="fas fa-tools mr-2"></i> Use in Protocol Builder</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Simplify Agreement Modal -->
-    <div id="simplifyAgreementModal" class="custom-modal-overlay view-hidden">
+    <!-- Anomaly Investigator Modal (NEW) -->
+    <div id="anomalyInvestigatorModal" class="custom-modal-overlay view-hidden">
         <div class="custom-modal-content max-w-xl w-full h-auto">
             <div class="template-preview-header">
-                <h3 id="simplifyAgreementTitle">Simplified Agreement</h3>
-                <button class="close-preview-btn" onclick="hideSimplifyAgreementModal()"><i class="fas fa-times"></i></button>
+                <h3 id="anomalyInvestigatorTitle">Quantum Anomaly Investigation</h3>
+                <button class="close-preview-btn" onclick="window.hideAnomalyInvestigatorModal()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="template-preview-body">
-                <p id="simplifiedAgreementText" class="text-gray-700 text-left whitespace-pre-wrap leading-relaxed"></p>
+            <div class="template-preview-body text-left">
+                <p id="anomalyReportText" class="text-gray-400 text-sm mb-2"></p>
+                <div class="bg-gray-800 p-4 rounded-md border border-gray-700">
+                    <p class="text-gray-200 whitespace-pre-wrap" id="anomalyInvestigationOutput"></p>
+                </div>
                 <div class="template-preview-actions">
-                    <button class="btn-secondary" onclick="hideSimplifyAgreementModal()">Close</button>
+                    <button class="btn-secondary" onclick="window.hideAnomalyInvestigatorModal()">Close</button>
                 </div>
             </div>
         </div>
@@ -2227,6 +2282,71 @@
             dnsRecords: [], // Populated from Firestore
             quantumNodes: [], // Renamed from 'domains', populated from Firestore
             quantumChannels: [], // Renamed from 'emailAccounts', populated from Firestore
+            ecosystemRoadmap: { // NEW: Quantum Ecosystem Roadmap Data
+                phases: [
+                    {
+                        name: "Phase 1: Foundational Quantum Infrastructure",
+                        icon: "fas fa-cubes",
+                        description: "Establishment of core quantum computing hardware, secure quantum communication links, and foundational software layers.",
+                        milestones: [
+                            { name: "Global Qubit Network Mesh (GQNM) Alpha Deployment", status: "Completed", date: "2024-12-31", details: [
+                                "Deployment of 10 entangled quantum nodes across key regions.",
+                                "Initial inter-node communication protocols verified.",
+                                "Successful demonstration of secure quantum key distribution."
+                            ]},
+                            { name: "VaultQuantum™ v1.0 Launch", status: "Completed", date: "2025-03-15", details: [
+                                "Quantum-resistant data vaulting solution released.",
+                                "First client data migrated to VaultQuantum.",
+                                "Independent security audit passed."
+                            ]},
+                            { name: "QubitNest™ Core API Release", status: "In Progress", date: "2025-09-30", details: [
+                                "Developer access to distributed qubit clusters.",
+                                "Documentation for QubitNest™ API endpoints.",
+                                "Integration with open-source quantum frameworks."
+                            ]}
+                        ]
+                    },
+                    {
+                        name: "Phase 2: Quantum Protocol Expansion & Standardization",
+                        icon: "fas fa-scroll",
+                        description: "Development and standardization of advanced quantum protocols for diverse applications, ensuring interoperability and scalability.",
+                        milestones: [
+                            { name: "EntanglePath™ v2.0 Release (Dynamic Routing)", status: "Planned", date: "2026-06-30", details: [
+                                "Implementation of adaptive quantum routing algorithms.",
+                                "Real-time network optimization for entangled pairs.",
+                                "Beta testing with early adopter partners."
+                            ]},
+                            { name: "PhaseClaim™ Global Compliance Certification", status: "Planned", date: "2026-12-31", details: [
+                                "Attainment of global regulatory compliance for quantum asset claims.",
+                                "Integration with international legal frameworks.",
+                                "Blockchain-secured provenance for quantum IP."
+                            ]},
+                            { name: "QubitEcho™ Fault-Tolerant Network Integration", status: "Planned", date: "2027-03-31", details: [
+                                "Demonstration of self-healing quantum network segments.",
+                                "Protocol for quantum state replication and recovery.",
+                                "Increased network resilience against decoherence."
+                            ]}
+                        ]
+                    },
+                    {
+                        name: "Phase 3: AI-Quantum Symbiosis & Autonomous Operations",
+                        icon: "fas fa-brain",
+                        description: "Integration of AI for autonomous quantum network management, predictive analytics, and self-optimizing protocol deployment.",
+                        milestones: [
+                            { name: "AI-Driven Protocol Optimization (LogicSpin™ Integration)", status: "Future", date: "2027-12-31", details: [
+                                "AI models for real-time quantum circuit optimization.",
+                                "Automated anomaly detection in quantum operations.",
+                                "Predictive maintenance for quantum hardware."
+                            ]},
+                            { name: "Autonomous Quantum Resource Allocation", status: "Future", date: "2028-06-30", details: [
+                                "Self-adjusting qubit allocation based on demand.",
+                                "Dynamic re-configuration of quantum network resources.",
+                                "Energy efficiency optimization across the quantum grid."
+                            ]}
+                        ]
+                    }
+                ]
+            }
         };
 
         const sectorList = { // Static list of sectors for display
@@ -2399,7 +2519,10 @@
             }
             else if (viewId === 'quantum-insights') {
                 renderQuantumInsightsCharts();
-            } else if (viewId === 'api-keys') {
+            } else if (viewId === 'ecosystem-roadmap') {
+                renderEcosystemRoadmap(); // Render the new roadmap
+            }
+            else if (viewId === 'api-keys') {
                 renderApiKeysTable(); // This will fetch from Firestore
             } else if (viewId === 'settings') {
                 loadSettings(); // This will fetch from Firestore
@@ -2762,7 +2885,7 @@
 
             statusElement.textContent = "Generating...";
             statusElement.classList.remove('hidden');
-            if (targetElementId !== 'tempSimplifyOutput' && !targetElementId.startsWith('tempProtocolSummaryOutput')) { // Don't hide the temp div used for simplification or protocol summary
+            if (targetElementId !== 'tempSimplifyOutput' && !targetElementId.startsWith('tempProtocolSummaryOutput') && !targetElementId.startsWith('tempAnomalyOutput')) { // Don't hide the temp div used for simplification, project summary, or anomaly
                 targetElement.classList.add('hidden'); // Hide output until ready
             }
             buttonElement.disabled = true;
@@ -2828,21 +2951,16 @@
                     originalButtonText = 'Summarize Protocol';
                 } else if (type === 'Simplify Agreement') {
                     originalButtonText = 'Simplify Agreement';
-                } else if (type === 'Refine Code') {
-                    originalButtonText = `Refine Code`;
-                } else if (type === 'Explain Code') {
-                    originalButtonText = `Explain Code`;
-                } else if (type === 'Review Code') {
-                    originalButtonText = `Review Code`;
-                } else if (type === 'Generate Headline') {
-                    originalButtonText = `Generate Headline`;
-                } else if (type === 'Generate CTA') {
-                    originalButtonText = `Generate CTA`;
-                } else if (type === 'Generate Section Content') {
-                    originalButtonText = `Generate Section Content`;
-                } else if (type === 'Rephrase/Improve') {
-                    originalButtonText = `Rephrase/Improve`;
-                } else if (type === 'Explain DNS Type') {
+                } else if (type === 'Generate Quantum Code') {
+                    originalButtonText = 'Generate Quantum Code';
+                } else if (type === 'Optimize Quantum Code') {
+                    originalButtonText = 'Optimize Quantum Code';
+                } else if (type === 'Explain Quantum Code') {
+                    originalButtonText = 'Explain Quantum Code';
+                } else if (type === 'Investigate Anomaly') {
+                    originalButtonText = 'Investigate';
+                }
+                else if (type === 'Explain DNS Type') {
                     originalButtonText = 'Explain DNS Type';
                 } else if (type === 'Draft Channel Message') {
                     originalButtonText = 'Generate Draft';
@@ -2943,6 +3061,40 @@
             }
         });
 
+        // NEW: Quantum Code Development Buttons Logic
+        document.getElementById('generateQuantumCodeBtn')?.addEventListener('click', async (event) => {
+            const description = document.getElementById('quantumCodeDescription').value.trim();
+            const button = event.currentTarget;
+            if (!description) {
+                window.showCustomModal('Input Required', 'Please describe the quantum code you want to generate.');
+                return;
+            }
+            const prompt = `Generate a concise quantum code snippet (using a standard library like Qiskit or Cirq, indicate which) for the following description: "${description}". Provide ONLY the code block, no explanations or additional text.`;
+            await window.callGeminiAPI(prompt, 'quantumCodeArea', 'quantumCodeGenStatus', button, 'Generate Quantum Code');
+        });
+
+        document.getElementById('optimizeQuantumCodeBtn')?.addEventListener('click', async (event) => {
+            const code = document.getElementById('quantumCodeArea').value.trim();
+            const button = event.currentTarget;
+            if (!code) {
+                window.showCustomModal('Input Required', 'Please paste quantum code into the Quantum Code Area to optimize.');
+                return;
+            }
+            const prompt = `Optimize the following quantum code snippet for efficiency, reduced gate count, or improved coherence, if possible. Provide ONLY the optimized code block, no explanations or additional text. \n\n${code}`;
+            await window.callGeminiAPI(prompt, 'quantumCodeArea', 'quantumCodeOptExplainStatus', button, 'Optimize Quantum Code');
+        });
+
+        document.getElementById('explainQuantumCodeBtn')?.addEventListener('click', async (event) => {
+            const code = document.getElementById('quantumCodeArea').value.trim();
+            const button = event.currentTarget;
+            if (!code) {
+                window.showCustomModal('Input Required', 'Please paste quantum code into the Quantum Code Area to explain.');
+                return;
+            }
+            const prompt = `Explain the following quantum code snippet: \n\n${code}\n\n Describe its purpose, the quantum operations it performs, and any key concepts or principles involved. Focus on clarity for a quantum engineer.`;
+            await window.callGeminiAPI(prompt, 'quantumCodeExplanationOutput', 'quantumCodeOptExplainStatus', button, 'Explain Quantum Code');
+        });
+
 
         // --- Pricing View Logic ---
         // Placeholder exchange rates - In a real application, you would fetch these from a reliable API
@@ -3029,6 +3181,55 @@
                     }
                 });
             }
+        }
+
+        // --- Ecosystem Roadmap Logic (NEW) ---
+        function renderEcosystemRoadmap() {
+            const roadmapContainer = document.getElementById('roadmapContainer')?.querySelector('.space-y-4');
+            if (!roadmapContainer) return;
+            roadmapContainer.innerHTML = ''; // Clear previous content
+
+            if (FAA_QUANTUM_DATA.ecosystemRoadmap.phases.length === 0) {
+                roadmapContainer.innerHTML = '<p class="text-center text-gray-400 col-span-full">No roadmap data found.</p>';
+                return;
+            }
+
+            FAA_QUANTUM_DATA.ecosystemRoadmap.phases.forEach(phase => {
+                const phaseDiv = document.createElement('div');
+                phaseDiv.className = 'bg-gray-700 p-5 rounded-lg shadow-md border border-gray-600';
+                phaseDiv.innerHTML = `
+                    <button class="toggle-protocol-section-btn flex items-center justify-between w-full text-left cursor-pointer p-2 -m-2 rounded-md hover:bg-gray-600 transition-colors duration-200" onclick="window.toggleProtocolSection('phase-details-${phase.name.replace(/ /g, '-').toLowerCase()}')">
+                        <h4 class="text-xl font-bold text-orange-300 flex items-center">
+                            <i class="${phase.icon} mr-3 text-2xl"></i> ${phase.name}
+                        </h4>
+                        <span><i class="fas fa-chevron-down text-gray-400"></i></span>
+                    </button>
+                    <div id="phase-details-${phase.name.replace(/ /g, '-').toLowerCase()}" class="protocol-section-content hidden mt-4">
+                        <p class="text-gray-300 mb-4 text-sm">${phase.description}</p>
+                        <h5 class="text-lg font-semibold text-white mb-3">Key Milestones:</h5>
+                        <div class="space-y-3 pl-2">
+                            ${phase.milestones.map(milestone => `
+                                <div class="bg-gray-800 p-3 rounded-md border border-gray-700">
+                                    <button class="toggle-protocol-section-btn flex items-center justify-between w-full text-left cursor-pointer p-1 -m-1 rounded-md hover:bg-gray-700 transition-colors duration-200" onclick="window.toggleProtocolSection('milestone-details-${milestone.name.replace(/ /g, '-').toLowerCase()}')">
+                                        <h6 class="text-base font-semibold text-blue-300 flex items-center">
+                                            <i class="fas fa-flag-checkered mr-2 text-lg"></i> ${milestone.name}
+                                        </h6>
+                                        <span><i class="fas fa-chevron-down text-gray-400"></i></span>
+                                    </button>
+                                    <div id="milestone-details-${milestone.name.replace(/ /g, '-').toLowerCase()}" class="protocol-section-content hidden mt-2">
+                                        <p class="text-gray-400 text-xs mb-1">Status: <span class="font-semibold text-white ${milestone.status === 'Completed' ? 'text-green-500' : milestone.status === 'In Progress' ? 'text-yellow-500' : 'text-gray-500'}">${milestone.status}</span></p>
+                                        <p class="text-gray-400 text-xs mb-2">Target Date: <span class="font-semibold text-white">${milestone.date}</span></p>
+                                        <ul class="list-disc list-inside text-gray-400 text-xs pl-2">
+                                            ${milestone.details.map(detail => `<li>${detail}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                roadmapContainer.appendChild(phaseDiv);
+            });
         }
 
         // --- API Keys View Logic ---
@@ -3553,6 +3754,25 @@
 
         window.hideProtocolSummaryModal = function() {
             document.getElementById('protocolSummaryModal')?.classList.remove('active');
+        };
+
+        // --- Anomaly Investigator Modal (NEW) ---
+        window.showAnomalyInvestigatorModal = function(title, investigationOutput) {
+            const modal = document.getElementById('anomalyInvestigatorModal');
+            const modalTitle = document.getElementById('anomalyInvestigatorTitle');
+            const anomalyReportText = document.getElementById('anomalyReportText');
+            const anomalyInvestigationOutput = document.getElementById('anomalyInvestigationOutput');
+
+            if (modal && modalTitle && anomalyReportText && anomalyInvestigationOutput) {
+                modalTitle.textContent = `Anomaly Investigation: ${title}`;
+                anomalyReportText.textContent = `Reported Anomaly: ${title}`;
+                anomalyInvestigationOutput.innerHTML = investigationOutput;
+                modal.classList.add('active');
+            }
+        };
+
+        window.hideAnomalyInvestigatorModal = function() {
+            document.getElementById('anomalyInvestigatorModal')?.classList.remove('active');
         };
 
         // --- Channel Draft Modal (NEW) ---
